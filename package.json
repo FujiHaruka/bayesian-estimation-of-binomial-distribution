@@ -12,7 +12,6 @@
   "license": "MIT",
   "dependencies": {
     "chart.js": "^4.2.1",
-    "esbuild": "^0.17.8",
     "jstat": "^1.9.6",
     "parcel": "^2.8.3",
     "prettier": "^2.8.4",
