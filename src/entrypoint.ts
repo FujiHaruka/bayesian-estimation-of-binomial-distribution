@@ -1,11 +1,12 @@
 import { Chart } from "https://esm.sh/chart.js@4.2.1/auto";
-import { createBeta } from "./func.ts";
+import jStat from "https://esm.sh/jstat@1.9.6"
 
-const beta = createBeta(2, 3);
-const data = Array.from({ length: 100 }).map((_, i) => {
-  const x = i / 100;
-  return { x, y: beta(x) };
+const data = Array.from({ length: 1000 }).map((_, i) => {
+  const x = i / 1000;
+  return { x, y: jStat.beta.pdf(x, 120, 80) };
 });
+
+console.log(jStat.beta.mode(120, 80))
 
 globalThis.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("chart");
@@ -25,6 +26,7 @@ globalThis.addEventListener("DOMContentLoaded", () => {
             data: data.map((row) => row.y),
             pointRadius: 0,
             fill: true,
+            tension: 0.1,
           },
         ],
       },
