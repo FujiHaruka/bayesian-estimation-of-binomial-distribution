@@ -1,0 +1,21 @@
+{
+  "name": "bayesian-estimation-of-binomial-distribution",
+  "private": true,
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "format": "prettier --write src/",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "FujiHaruka",
+  "license": "MIT",
+  "dependencies": {
+    "chart.js": "^4.2.1",
+    "esbuild": "^0.17.8",
+    "jstat": "^1.9.6",
+    "parcel": "^2.8.3",
+    "prettier": "^2.8.4",
+    "typescript": "^4.9.5"
+  }
+}
