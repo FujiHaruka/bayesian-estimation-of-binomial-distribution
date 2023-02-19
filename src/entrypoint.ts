@@ -11,19 +11,27 @@ function generateData(alpha: number, beta: number): { x: number; y: number }[] {
   return data;
 }
 
-console.log(jStat.beta.mode(120, 80));
+type SampleResult = "success" | "failure";
+
+function generateSample(probability: number): SampleResult {
+  return Math.random() < probability ? "success" : "failure";
+}
 
 window.addEventListener("DOMContentLoaded", () => {
-  const [chartCanvas, runButton] = ["#chart", "#run-simulation"].map(
-    (selector) => document.querySelector(selector)
-  );
+  const [chartCanvas, runButton, trueProbabilityInput, trialsInput] = [
+    "#chart",
+    "#run-simulation",
+    "#true-probability",
+    "#trials",
+  ].map((selector) => document.querySelector(selector));
 
-  if (!chartCanvas) {
+  if (!chartCanvas || !runButton || !trueProbabilityInput || !trialsInput) {
     throw new Error("Expected elements not found");
   }
 
-  let alpha = 2;
-  let beta = 3;
+  let trials = 0;
+  let alpha = 1;
+  let beta = 1;
 
   const data = generateData(alpha, beta);
   const chart = new Chart(chartCanvas as HTMLCanvasElement, {
@@ -43,8 +51,17 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   (runButton as HTMLButtonElement).addEventListener("click", () => {
-    alpha += 1;
-    beta += 1;
+    const probability = (trueProbabilityInput as HTMLInputElement)
+      .valueAsNumber;
+    // const TRIALS = (trialsInput as HTMLInputElement).valueAsNumber
+
+    const sample = generateSample(probability);
+
+    // trials += 1
+    console.log({ trials, probability, sample });
+
+    alpha = sample === "success" ? alpha + 1 : alpha;
+    beta = sample === "failure" ? beta + 1 : beta;
 
     chart.data.datasets[0].label = `Beta(${alpha}, ${beta})`;
     chart.data.datasets[0].data = generateData(alpha, beta).map(({ y }) => y);
