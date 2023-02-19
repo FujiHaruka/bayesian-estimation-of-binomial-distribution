@@ -4,11 +4,41 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Bayesian estimation of binomial distribution</title>
+    <link
+      rel="stylesheet"
+      href="../node_modules/@picocss/pico/css/pico.min.css"
+    />
     <script type="module" src="entrypoint.ts"></script>
   </head>
   <body>
-    <h1>Chart</h1>
-    <div style="width: 800px"><canvas id="chart"></canvas></div>
+    <main class="container">
+      <p>Bayesian estimation of binomial distribution</p>
+
+      <div style="width: 100%"><canvas id="chart"></canvas></div>
+
+      <footer style="text-align: right">
+        <a href="#" role="button" id="run-simulation">Run Simulation</a>
+      </footer>
+
+      <article>
+        <header>Parameters</header>
+        <div class="grid">
+          <label for="true-probability">
+            True probability
+            <input type="number" id="true-probability" value="0.5" />
+          </label>
+
+          <label for="trials">
+            Number of trials
+            <input type="number" id="trials" value="10" />
+          </label>
+        </div>
+
+        <!-- <footer style="text-align: right;">
+          <a href="#" role="button" id="run-simulation">Run Simulation</a>
+        </footer> -->
+      </article>
+    </main>
   </body>
 </html>

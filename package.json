@@ -11,6 +11,7 @@
   "author": "FujiHaruka",
   "license": "MIT",
   "dependencies": {
+    "@picocss/pico": "^1.5.7",
     "chart.js": "^4.2.1",
     "jstat": "^1.9.6",
     "parcel": "^2.8.3",
