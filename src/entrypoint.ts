@@ -26,7 +26,7 @@ globalThis.addEventListener("DOMContentLoaded", () => {
             data: data.map((row) => row.y),
             pointRadius: 0,
             fill: true,
-            tension: 0.1,
+            cubicInterpolationMode: "monotone",
           },
         ],
       },
