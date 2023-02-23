@@ -2,12 +2,16 @@ import { Chart } from "chart.js/auto";
 import { seq } from "./arrays";
 import { generateBetaDistributionData } from "./beta";
 
+export type BetaChart = {
+  update: (params: { alpha: number; beta: number }) => void;
+};
+
 export function createBetaDistributionChart(
   canvas: HTMLCanvasElement,
   { alpha, beta }: { alpha: number; beta: number }
-) {
+): BetaChart {
   const data = generateBetaDistributionData(alpha, beta);
-  return new Chart(canvas, {
+  const rawChart = new Chart(canvas, {
     type: "line",
     data: {
       labels: data.map((row) => row.x),
@@ -44,10 +48,26 @@ export function createBetaDistributionChart(
       },
     },
   });
+
+  return {
+    update({ alpha, beta }) {
+      rawChart.data.datasets[0].label = `Beta(${alpha}, ${beta})`;
+      rawChart.data.datasets[0].data = generateBetaDistributionData(
+        alpha,
+        beta
+      ).map(({ y }) => y);
+
+      rawChart.update();
+    },
+  };
 }
 
-export function createTrialDotChart(canvas: HTMLCanvasElement) {
-  return new Chart(canvas, {
+export type TrialDotChart = {
+  add(sample: "success" | "failure"): void;
+};
+
+export function createTrialDotChart(canvas: HTMLCanvasElement): TrialDotChart {
+  const rawChart = new Chart(canvas, {
     type: "scatter",
     data: {
       labels: [],
@@ -88,10 +108,31 @@ export function createTrialDotChart(canvas: HTMLCanvasElement) {
           display: true,
           text: "Individual trial results",
         },
+        tooltip: {
+          enabled: false,
+        },
       },
     },
   });
+
+  let trials = 0;
+
+  return {
+    add(sample) {
+      const indexToUpdate = sample === "success" ? 0 : 1;
+      rawChart.data.datasets[indexToUpdate].data.push({
+        x: trials % 10,
+        y: Math.floor(trials / 10),
+      });
+      trials += 1;
+      rawChart.update();
+    },
+  };
 }
+
+export type TrialCumulativeSumChart = {
+  add(params: { successes: number; failures: number }): void;
+};
 
 export function createTrialCumulativeSumChart(
   canvas: HTMLCanvasElement,
@@ -102,8 +143,8 @@ export function createTrialCumulativeSumChart(
     suggestedMin: number;
     suggestedMax: number;
   }
-) {
-  return new Chart(canvas, {
+): TrialCumulativeSumChart {
+  const rawChart = new Chart(canvas, {
     type: "line",
     data: {
       labels: seq({ start: 1, size: suggestedMax }),
@@ -143,4 +184,12 @@ export function createTrialCumulativeSumChart(
       },
     },
   });
+
+  return {
+    add({ successes, failures }) {
+      rawChart.data.datasets[0].data.push(successes);
+      rawChart.data.datasets[1].data.push(-1 * failures);
+      rawChart.update();
+    },
+  };
 }

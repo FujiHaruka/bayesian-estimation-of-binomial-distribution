@@ -1,9 +1,10 @@
-import type { Chart } from "chart.js/auto";
-import { generateBetaDistributionData } from "./beta";
 import {
+  BetaChart,
   createBetaDistributionChart,
   createTrialCumulativeSumChart,
   createTrialDotChart,
+  TrialCumulativeSumChart,
+  TrialDotChart,
 } from "./charts";
 import { generateSample } from "./sample";
 import { setIntervalUntilN } from "./setIntervalUntilN";
@@ -86,7 +87,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
     setIntervalUntilN(
       () => {
-        trial.doOneTrial();
+        trial.doSingleTrial();
       },
       1000,
       totalTrials
@@ -102,27 +103,13 @@ window.addEventListener("DOMContentLoaded", () => {
   priorAlphaInput.addEventListener("change", () => {
     const priorAlpha = priorAlphaInput.valueAsNumber;
     const priorBeta = priorBetaInput.valueAsNumber;
-
-    betaChart.data.datasets[0].label = `Beta(${priorAlpha}, ${priorBeta})`;
-    betaChart.data.datasets[0].data = generateBetaDistributionData(
-      priorAlpha,
-      priorBeta
-    ).map(({ y }) => y);
-
-    betaChart.update();
+    betaChart.update({ alpha: priorAlpha, beta: priorBeta });
   });
 
   priorBetaInput.addEventListener("change", () => {
     const priorAlpha = priorAlphaInput.valueAsNumber;
     const priorBeta = priorBetaInput.valueAsNumber;
-
-    betaChart.data.datasets[0].label = `Beta(${priorAlpha}, ${priorBeta})`;
-    betaChart.data.datasets[0].data = generateBetaDistributionData(
-      priorAlpha,
-      priorBeta
-    ).map(({ y }) => y);
-
-    betaChart.update();
+    betaChart.update({ alpha: priorAlpha, beta: priorBeta });
   });
 });
 
@@ -136,9 +123,9 @@ class Trial {
   public alpha: number;
   public beta: number;
 
-  private betaChart: Chart;
-  private trialDotChart: Chart;
-  private trialBarChart: Chart;
+  private betaChart: BetaChart;
+  private trialDotChart: TrialDotChart;
+  private trialBarChart: TrialCumulativeSumChart;
 
   constructor({
     probability,
@@ -151,9 +138,9 @@ class Trial {
     probability: number;
     priorAlpha: number;
     priorBeta: number;
-    betaChart: Chart;
-    trialDotChart: Chart;
-    trialBarChart: Chart;
+    betaChart: BetaChart;
+    trialDotChart: TrialDotChart;
+    trialBarChart: TrialCumulativeSumChart;
   }) {
     this.probability = probability;
     this.alpha = priorAlpha;
@@ -163,10 +150,8 @@ class Trial {
     this.trialBarChart = trialBarChart;
   }
 
-  doOneTrial() {
-    const { probability, betaChart, trialDotChart, trialBarChart } = this;
-
-    const sample = generateSample(probability);
+  doSingleTrial() {
+    const sample = generateSample(this.probability);
 
     this.trials += 1;
     switch (sample) {
@@ -182,26 +167,11 @@ class Trial {
       }
     }
 
-    // Update beta chart
-    betaChart.data.datasets[0].label = `Beta(${this.alpha}, ${this.beta})`;
-    betaChart.data.datasets[0].data = generateBetaDistributionData(
-      this.alpha,
-      this.beta
-    ).map(({ y }) => y);
-
-    betaChart.update();
-
-    // Update trial bar chart
-    trialBarChart.data.datasets[0].data.push(this.successes);
-    trialBarChart.data.datasets[1].data.push(-1 * this.failures);
-    trialBarChart.update();
-
-    // Update trial dot chart
-    const indexToUpdate = sample === "success" ? 0 : 1;
-    trialDotChart.data.datasets[indexToUpdate].data.push({
-      x: (this.trials - 1) % 10,
-      y: Math.floor((this.trials - 1) / 10),
+    this.betaChart.update({ alpha: this.alpha, beta: this.beta });
+    this.trialBarChart.add({
+      successes: this.successes,
+      failures: this.failures,
     });
-    trialDotChart.update();
+    this.trialDotChart.add(sample);
   }
 }
