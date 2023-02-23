@@ -26,10 +26,6 @@ export function createBetaDistributionChart(
 
 export function createTrialDotChart(
   canvas: HTMLCanvasElement,
-  { suggestedMin, suggestedMax }: {
-    suggestedMin: number;
-    suggestedMax: number;
-  },
 ) {
   return new Chart(canvas, {
     type: "scatter",
@@ -50,12 +46,20 @@ export function createTrialDotChart(
       elements: {
         point: {
           radius: 5,
+          borderWidth: 3,
         },
       },
       scales: {
         x: {
-          suggestedMax,
-          suggestedMin,
+          suggestedMin: -2,
+          suggestedMax: 12,
+          display: false,
+        },
+        y: {
+          suggestedMin: -2,
+          suggestedMax: 8,
+          display: false,
+          reverse: true,
         },
       },
       animation: false,

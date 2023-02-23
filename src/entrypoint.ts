@@ -51,7 +51,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   const trialDotChart = createTrialDotChart(
     trialDotChartCanvas as HTMLCanvasElement,
-    { suggestedMin: 0, suggestedMax: TRIALS },
   );
 
   const trialBarChart = createTrialCumulativeSumChart(
@@ -102,15 +101,15 @@ window.addEventListener("DOMContentLoaded", () => {
     switch (sample) {
       case "success": {
         trialDotChart.data.datasets[0].data.push({
-          x: trials,
-          y: 0,
+          x: (trials - 1) % 10,
+          y: Math.floor((trials - 1) / 10),
         });
         break;
       }
       case "failure": {
         trialDotChart.data.datasets[1].data.push({
-          x: trials,
-          y: 0,
+          x: (trials - 1) % 10,
+          y: Math.floor((trials - 1) / 10),
         });
         break;
       }
@@ -122,7 +121,7 @@ window.addEventListener("DOMContentLoaded", () => {
     () => {
       (runButton as HTMLButtonElement).click();
     },
-    2000,
+    1000,
     TRIALS,
   );
 });
