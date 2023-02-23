@@ -1,6 +1,6 @@
 import { Chart } from "chart.js/auto";
 import { seq } from "./arrays";
-import { generateBetaDistributionData } from "./beta";
+import { generateBetaDistributionData, generateHPD } from "./beta";
 
 export type BetaChart = {
   update: (params: { alpha: number; beta: number }) => void;
@@ -26,6 +26,12 @@ export function createBetaDistributionChart(
           borderColor: "rgb(75, 192, 192)",
           backgroundColor: "rgba(75, 192, 192, 0.5)",
         },
+        // {
+        //   label: "95% HPD",
+        //   data: [],
+        //   pointRadius: 0,
+        //   borderColor: "rgb(150, 150, 150)",
+        // }
       ],
     },
     options: {
@@ -59,6 +65,8 @@ export function createBetaDistributionChart(
         alpha,
         beta
       ).map(({ y }) => y);
+
+      // rawChart.data.datasets[1].data = generateHPD(alpha, beta).map(({y}) => y)
 
       rawChart.update();
     },
