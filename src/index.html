@@ -15,7 +15,18 @@
     <main class="container">
       <p>Bayesian estimation of binomial distribution</p>
 
-      <div style="width: 100%"><canvas id="chart"></canvas></div>
+      <div style="width: 100%; margin-bottom: 32px;" class="grid">
+        <div style="padding-right: 16px">
+          <canvas id="trial-dot-chart"></canvas>
+        </div>
+        <div style="padding-left: 16px">
+          <canvas id="traial-bar-chart"></canvas>
+        </div>
+      </div>
+
+      <div style="width: 100%">
+        <canvas id="beta-chart"></canvas>
+      </div>
 
       <footer style="text-align: right">
         <a href="#" role="button" id="run-simulation">Run Simulation</a>
