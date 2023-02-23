@@ -5,14 +5,8 @@ import {
   createTrialCumulativeSumChart,
   createTrialDotChart,
 } from "./charts";
+import { generateSample } from "./sample";
 import { setIntervalUntilN } from "./setIntervalUntilN";
-
-// TODO: Move to a separate file
-type SampleResult = "success" | "failure";
-
-function generateSample(probability: number): SampleResult {
-  return Math.random() < probability ? "success" : "failure";
-}
 
 const Defaults = {
   PRIOR_ALPHA: 1,
