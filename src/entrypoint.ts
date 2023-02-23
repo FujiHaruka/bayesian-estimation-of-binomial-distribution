@@ -1,20 +1,10 @@
-import { Chart } from "chart.js/auto";
-import jStat from "jstat";
-import { seq } from "./arrays";
+import { generateBetaDistributionData } from "./beta";
+import {
+  createBetaDistributionChart,
+  createTrialCumulativeSumChart,
+  createTrialDotChart,
+} from "./charts";
 import { setIntervalUntilN } from "./setIntervalUntilN";
-
-const DATA_SIZE = 1000;
-
-function generateBetaDistributionData(
-  alpha: number,
-  beta: number,
-): { x: number; y: number }[] {
-  const data = Array.from({ length: DATA_SIZE }).map((_, i) => {
-    const x = i / DATA_SIZE;
-    return { x, y: jStat.beta.pdf(x, alpha, beta) };
-  });
-  return data;
-}
 
 type SampleResult = "success" | "failure";
 
@@ -54,82 +44,20 @@ window.addEventListener("DOMContentLoaded", () => {
   let alpha = 1;
   let beta = 1;
 
-  const data = generateBetaDistributionData(alpha, beta);
-  const betaChart = new Chart(betaChartCanvas as HTMLCanvasElement, {
-    type: "line",
-    data: {
-      labels: data.map((row) => row.x),
-      datasets: [
-        {
-          label: `Beta(${alpha}, ${beta})`,
-          data: data.map((row) => row.y),
-          pointRadius: 0,
-          fill: true,
-          cubicInterpolationMode: "monotone",
-        },
-      ],
-    },
-  });
+  const betaChart = createBetaDistributionChart(
+    betaChartCanvas as HTMLCanvasElement,
+    { alpha, beta },
+  );
 
-  const trialDotChart = new Chart(trialDotChartCanvas as HTMLCanvasElement, {
-    type: "scatter",
-    data: {
-      labels: [],
-      datasets: [
-        {
-          label: "Success",
-          data: [] as { x: number; y: number }[],
-        },
-        {
-          label: "Failure",
-          data: [] as { x: number; y: number }[],
-        },
-      ],
-    },
-    options: {
-      elements: {
-        point: {
-          radius: 5,
-        },
-      },
-      scales: {
-        x: {
-          suggestedMax: TRIALS,
-          suggestedMin: 0,
-        },
-      },
-      animation: false,
-    },
-  });
+  const trialDotChart = createTrialDotChart(
+    trialDotChartCanvas as HTMLCanvasElement,
+    { suggestedMin: 0, suggestedMax: TRIALS },
+  );
 
-  const trialBarChart = new Chart(trialBarChartCanvas as HTMLCanvasElement, {
-    type: "bar",
-    data: {
-      labels: seq({ start: 1, size: TRIALS }),
-      datasets: [
-        {
-          label: "Success",
-          data: [] as number[],
-        },
-        {
-          label: "Failure",
-          data: [] as number[],
-        },
-      ],
-    },
-    options: {
-      scales: {
-        x: {
-          stacked: true,
-        },
-        y: {
-          suggestedMax: TRIALS,
-          suggestedMin: -1 * TRIALS,
-          stacked: true,
-        },
-      },
-    },
-  });
+  const trialBarChart = createTrialCumulativeSumChart(
+    trialBarChartCanvas as HTMLCanvasElement,
+    { suggestedMin: -1 * TRIALS, suggestedMax: TRIALS },
+  );
 
   (runButton as HTMLButtonElement).addEventListener("click", (ev) => {
     ev.preventDefault();
