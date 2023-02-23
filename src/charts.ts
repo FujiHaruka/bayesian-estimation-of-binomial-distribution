@@ -71,7 +71,7 @@ export function createTrialCumulativeSumChart(
   },
 ) {
   return new Chart(canvas, {
-    type: "bar",
+    type: "line",
     data: {
       labels: seq({ start: 1, size: suggestedMax }),
       datasets: [
@@ -86,16 +86,22 @@ export function createTrialCumulativeSumChart(
       ],
     },
     options: {
-      scales: {
-        x: {
-          stacked: true,
+      elements: {
+        point: {
+          radius: 0,
         },
+        line: {
+          fill: true,
+          stepped: "after",
+        },
+      },
+      scales: {
         y: {
           suggestedMax,
           suggestedMin,
-          stacked: true,
         },
       },
+      animation: false,
     },
   });
 }

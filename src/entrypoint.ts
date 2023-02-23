@@ -73,10 +73,12 @@ window.addEventListener("DOMContentLoaded", () => {
       case "success": {
         successes += 1;
         alpha += 1;
+        break;
       }
       case "failure": {
         failures += 1;
         beta += 1;
+        break;
       }
     }
 
@@ -103,12 +105,14 @@ window.addEventListener("DOMContentLoaded", () => {
           x: trials,
           y: 0,
         });
+        break;
       }
       case "failure": {
         trialDotChart.data.datasets[1].data.push({
           x: trials,
           y: 0,
         });
+        break;
       }
     }
     trialDotChart.update();
