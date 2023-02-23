@@ -12,7 +12,7 @@ import { setIntervalUntilN } from "./setIntervalUntilN";
 window.addEventListener("DOMContentLoaded", () => {
   const [
     trialDotChartCanvas,
-    trialBarChartCanvas,
+    cumulativeSumChartCanvas,
     betaChartCanvas,
     runButton,
     trueProbabilityInput,
@@ -21,7 +21,7 @@ window.addEventListener("DOMContentLoaded", () => {
     priorBetaInput,
   ] = [
     "#trial-dot-chart",
-    "#traial-bar-chart",
+    "#traial-cumulative-sum-chart",
     "#beta-chart",
     "#run-simulation",
     "#true-probability",
@@ -41,7 +41,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   if (
     !trialDotChartCanvas ||
-    !trialBarChartCanvas ||
+    !cumulativeSumChartCanvas ||
     !betaChartCanvas ||
     !runButton ||
     !trueProbabilityInput ||
@@ -60,11 +60,13 @@ window.addEventListener("DOMContentLoaded", () => {
     alpha: defaults.priorAlpha,
     beta: defaults.priorBeta,
   });
-  // TODO: remane vars
   const trialDotChart = createTrialDotChart(trialDotChartCanvas);
-  const trialBarChart = createTrialCumulativeSumChart(trialBarChartCanvas, {
-    max: defaults.trials,
-  });
+  const cumulativeSumChart = createTrialCumulativeSumChart(
+    cumulativeSumChartCanvas,
+    {
+      max: defaults.trials,
+    }
+  );
 
   runButton.addEventListener("click", (ev) => {
     ev.preventDefault();
@@ -79,7 +81,7 @@ window.addEventListener("DOMContentLoaded", () => {
       priorBeta,
       betaChart,
       trialDotChart,
-      trialBarChart,
+      cumulativeSumChart,
     });
 
     setIntervalUntilN(
@@ -99,7 +101,7 @@ window.addEventListener("DOMContentLoaded", () => {
 
   trialsInput.addEventListener("input", () => {
     const totalTrials = trialsInput.valueAsNumber;
-    trialBarChart.updateAxises({ max: totalTrials });
+    cumulativeSumChart.updateAxises({ max: totalTrials });
   });
 
   priorAlphaInput.addEventListener("input", () => {
@@ -127,7 +129,7 @@ class Trial {
 
   private betaChart: BetaChart;
   private trialDotChart: TrialDotChart;
-  private trialBarChart: TrialCumulativeSumChart;
+  private cumulativeSumChart: TrialCumulativeSumChart;
 
   constructor({
     probability,
@@ -135,21 +137,21 @@ class Trial {
     priorBeta,
     betaChart,
     trialDotChart,
-    trialBarChart,
+    cumulativeSumChart,
   }: {
     probability: number;
     priorAlpha: number;
     priorBeta: number;
     betaChart: BetaChart;
     trialDotChart: TrialDotChart;
-    trialBarChart: TrialCumulativeSumChart;
+    cumulativeSumChart: TrialCumulativeSumChart;
   }) {
     this.probability = probability;
     this.alpha = priorAlpha;
     this.beta = priorBeta;
     this.betaChart = betaChart;
     this.trialDotChart = trialDotChart;
-    this.trialBarChart = trialBarChart;
+    this.cumulativeSumChart = cumulativeSumChart;
   }
 
   doSingleTrial() {
@@ -170,7 +172,7 @@ class Trial {
     }
 
     this.betaChart.update({ alpha: this.alpha, beta: this.beta });
-    this.trialBarChart.add({
+    this.cumulativeSumChart.add({
       successes: this.successes,
       failures: this.failures,
     });
