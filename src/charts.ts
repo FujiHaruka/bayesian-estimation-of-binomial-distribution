@@ -21,6 +21,22 @@ export function createBetaDistributionChart(
         },
       ],
     },
+    options: {
+      scales: {
+        x: {
+          type: "linear",
+          min: 0,
+          max: 1,
+          ticks: {
+            stepSize: 0.05,
+          },
+        },
+        y: {
+          suggestedMin: 0,
+          suggestedMax: 2,
+        },
+      },
+    },
   });
 }
 
