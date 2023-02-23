@@ -9,11 +9,6 @@ import {
 import { generateSample } from "./sample";
 import { setIntervalUntilN } from "./setIntervalUntilN";
 
-const Defaults = {
-  PRIOR_ALPHA: 1,
-  PRIOR_BETA: 1,
-};
-
 window.addEventListener("DOMContentLoaded", () => {
   const [
     trialDotChartCanvas,
@@ -55,18 +50,20 @@ window.addEventListener("DOMContentLoaded", () => {
     throw new Error("Expected elements not found");
   }
 
-  const TRIALS = 30;
+  const defaults = {
+    priorAlpha: priorAlphaInput.valueAsNumber,
+    priorBeta: priorBetaInput.valueAsNumber,
+    trials: trialsInput.valueAsNumber,
+  };
 
   const betaChart = createBetaDistributionChart(betaChartCanvas, {
-    alpha: Defaults.PRIOR_ALPHA,
-    beta: Defaults.PRIOR_BETA,
+    alpha: defaults.priorAlpha,
+    beta: defaults.priorBeta,
   });
-
+  // TODO: remane vars
   const trialDotChart = createTrialDotChart(trialDotChartCanvas);
-
   const trialBarChart = createTrialCumulativeSumChart(trialBarChartCanvas, {
-    suggestedMin: -1 * TRIALS,
-    suggestedMax: TRIALS,
+    max: defaults.trials,
   });
 
   runButton.addEventListener("click", (ev) => {
@@ -100,13 +97,18 @@ window.addEventListener("DOMContentLoaded", () => {
     priorBetaInput.disabled = true;
   });
 
-  priorAlphaInput.addEventListener("change", () => {
+  trialsInput.addEventListener("input", () => {
+    const totalTrials = trialsInput.valueAsNumber;
+    trialBarChart.updateAxises({ max: totalTrials });
+  });
+
+  priorAlphaInput.addEventListener("input", () => {
     const priorAlpha = priorAlphaInput.valueAsNumber;
     const priorBeta = priorBetaInput.valueAsNumber;
     betaChart.update({ alpha: priorAlpha, beta: priorBeta });
   });
 
-  priorBetaInput.addEventListener("change", () => {
+  priorBetaInput.addEventListener("input", () => {
     const priorAlpha = priorAlphaInput.valueAsNumber;
     const priorBeta = priorBetaInput.valueAsNumber;
     betaChart.update({ alpha: priorAlpha, beta: priorBeta });

@@ -132,30 +132,29 @@ export function createTrialDotChart(canvas: HTMLCanvasElement): TrialDotChart {
 
 export type TrialCumulativeSumChart = {
   add(params: { successes: number; failures: number }): void;
+  updateAxises(params: { max: number }): void;
 };
 
 export function createTrialCumulativeSumChart(
   canvas: HTMLCanvasElement,
   {
-    suggestedMin,
-    suggestedMax,
+    max,
   }: {
-    suggestedMin: number;
-    suggestedMax: number;
+    max: number;
   }
 ): TrialCumulativeSumChart {
   const rawChart = new Chart(canvas, {
     type: "line",
     data: {
-      labels: seq({ start: 1, size: suggestedMax }),
+      labels: seq({ start: 0, size: max }),
       datasets: [
         {
           label: "Success",
-          data: [] as number[],
+          data: [0] as number[],
         },
         {
           label: "Failure",
-          data: [] as number[],
+          data: [0] as number[],
         },
       ],
     },
@@ -166,13 +165,13 @@ export function createTrialCumulativeSumChart(
         },
         line: {
           fill: true,
-          stepped: "after",
+          stepped: true,
         },
       },
       scales: {
         y: {
-          suggestedMax,
-          suggestedMin,
+          suggestedMax: max,
+          suggestedMin: -1 * max,
         },
       },
       animation: false,
@@ -189,6 +188,12 @@ export function createTrialCumulativeSumChart(
     add({ successes, failures }) {
       rawChart.data.datasets[0].data.push(successes);
       rawChart.data.datasets[1].data.push(-1 * failures);
+      rawChart.update();
+    },
+    updateAxises({ max }) {
+      rawChart.data.labels = seq({ start: 0, size: max });
+      rawChart.options.scales!.y!.min = -1 * max;
+      rawChart.options.scales!.y!.max = max;
       rawChart.update();
     },
   };
