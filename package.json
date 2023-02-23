@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "parcel serve src/index.html --dist-dir dist-dev",
-    "build": "parcel build src/index.html --dist-dir dist",
+    "build": "parcel build src/index.html --dist-dir dist --public-url /bayesian-estimation-of-binomial-distribution/",
     "format": "prettier --write src/",
     "typecheck": "tsc --noEmit",
     "deploy": "git clean -fdx dist/ && npm run build && gh-pages -d dist/",
