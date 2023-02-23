@@ -106,7 +106,7 @@ export function createTrialDotChart(canvas: HTMLCanvasElement): TrialDotChart {
       plugins: {
         title: {
           display: true,
-          text: "Individual trial results",
+          text: "Trial results",
         },
         tooltip: {
           enabled: false,

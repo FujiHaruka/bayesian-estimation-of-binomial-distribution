@@ -6,8 +6,8 @@ import {
   TrialCumulativeSumChart,
   TrialDotChart,
 } from "./charts";
+import { setSmartInterval } from "./interval";
 import { generateSample } from "./sample";
-import { setIntervalUntilN } from "./setIntervalUntilN";
 
 window.addEventListener("DOMContentLoaded", () => {
   const [
@@ -84,12 +84,13 @@ window.addEventListener("DOMContentLoaded", () => {
       cumulativeSumChart,
     });
 
-    setIntervalUntilN(
-      () => {
+    setSmartInterval(
+      (count) => {
         trial.doSingleTrial();
       },
-      1000,
-      totalTrials
+      {
+        nTimes: totalTrials,
+      }
     );
 
     runButton.disabled = true;
