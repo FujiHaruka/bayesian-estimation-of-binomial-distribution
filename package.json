@@ -3,9 +3,11 @@
   "private": true,
   "version": "1.0.0",
   "scripts": {
-    "dev": "parcel src/index.html",
+    "dev": "parcel serve src/index.html --dist-dir dist-dev",
+    "build": "parcel build src/index.html --dist-dir dist",
     "format": "prettier --write src/",
     "typecheck": "tsc --noEmit",
+    "deploy": "git clean -fdx dist/ && npm run build && gh-pages -d dist/",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "FujiHaruka",
@@ -13,6 +15,7 @@
   "dependencies": {
     "@picocss/pico": "^1.5.7",
     "chart.js": "^4.2.1",
+    "gh-pages": "^5.0.0",
     "jstat": "^1.9.6",
     "parcel": "^2.8.3",
     "prettier": "^2.8.4",
