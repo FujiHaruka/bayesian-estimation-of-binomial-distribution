@@ -22,6 +22,9 @@ export function createBetaDistributionChart(
           pointRadius: 0,
           fill: true,
           cubicInterpolationMode: "monotone",
+          // https://github.com/chartjs/Chart.js/blob/6cc429ddde4808d8fcea7f8fe99693f7994d8a59/src/plugins/plugin.colors.ts#L19
+          borderColor: "rgb(75, 192, 192)",
+          backgroundColor: "rgba(75, 192, 192, 0.5)",
         },
       ],
     },
