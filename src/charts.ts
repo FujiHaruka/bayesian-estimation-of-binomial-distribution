@@ -36,6 +36,12 @@ export function createBetaDistributionChart(
           suggestedMax: 2,
         },
       },
+      plugins: {
+        title: {
+          display: true,
+          text: "Posterior distribution of the success probability",
+        },
+      },
     },
   });
 }
@@ -77,6 +83,12 @@ export function createTrialDotChart(canvas: HTMLCanvasElement) {
         },
       },
       animation: false,
+      plugins: {
+        title: {
+          display: true,
+          text: "Individual trial results",
+        },
+      },
     },
   });
 }
@@ -123,6 +135,12 @@ export function createTrialCumulativeSumChart(
         },
       },
       animation: false,
+      plugins: {
+        title: {
+          display: true,
+          text: "Cumulative sum of trial results",
+        },
+      },
     },
   });
 }

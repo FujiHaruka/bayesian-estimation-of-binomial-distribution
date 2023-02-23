@@ -7,11 +7,17 @@ import {
 } from "./charts";
 import { setIntervalUntilN } from "./setIntervalUntilN";
 
+// TODO: Move to a separate file
 type SampleResult = "success" | "failure";
 
 function generateSample(probability: number): SampleResult {
   return Math.random() < probability ? "success" : "failure";
 }
+
+const Defaults = {
+  PRIOR_ALPHA: 1,
+  PRIOR_BETA: 1,
+};
 
 window.addEventListener("DOMContentLoaded", () => {
   const [
@@ -21,6 +27,8 @@ window.addEventListener("DOMContentLoaded", () => {
     runButton,
     trueProbabilityInput,
     trialsInput,
+    priorAlphaInput,
+    priorBetaInput,
   ] = [
     "#trial-dot-chart",
     "#traial-bar-chart",
@@ -28,11 +36,15 @@ window.addEventListener("DOMContentLoaded", () => {
     "#run-simulation",
     "#true-probability",
     "#trials",
+    "#prior-alpha",
+    "#prior-beta",
   ].map((selector) => document.querySelector(selector)) as [
     HTMLCanvasElement,
     HTMLCanvasElement,
     HTMLCanvasElement,
     HTMLButtonElement,
+    HTMLInputElement,
+    HTMLInputElement,
     HTMLInputElement,
     HTMLInputElement
   ];
@@ -51,8 +63,8 @@ window.addEventListener("DOMContentLoaded", () => {
   const TRIALS = 30;
 
   const betaChart = createBetaDistributionChart(betaChartCanvas, {
-    alpha: 1,
-    beta: 1,
+    alpha: Defaults.PRIOR_ALPHA,
+    beta: Defaults.PRIOR_BETA,
   });
 
   const trialDotChart = createTrialDotChart(trialDotChartCanvas);
@@ -67,8 +79,12 @@ window.addEventListener("DOMContentLoaded", () => {
 
     const probability = trueProbabilityInput.valueAsNumber;
     const totalTrials = trialsInput.valueAsNumber;
+    const priorAlpha = priorAlphaInput.valueAsNumber;
+    const priorBeta = priorBetaInput.valueAsNumber;
     const trial = new Trial({
       probability,
+      priorAlpha,
+      priorBeta,
       betaChart,
       trialDotChart,
       trialBarChart,
@@ -85,6 +101,34 @@ window.addEventListener("DOMContentLoaded", () => {
     runButton.disabled = true;
     trueProbabilityInput.disabled = true;
     trialsInput.disabled = true;
+    priorAlphaInput.disabled = true;
+    priorBetaInput.disabled = true;
+  });
+
+  priorAlphaInput.addEventListener("change", () => {
+    const priorAlpha = priorAlphaInput.valueAsNumber;
+    const priorBeta = priorBetaInput.valueAsNumber;
+
+    betaChart.data.datasets[0].label = `Beta(${priorAlpha}, ${priorBeta})`;
+    betaChart.data.datasets[0].data = generateBetaDistributionData(
+      priorAlpha,
+      priorBeta
+    ).map(({ y }) => y);
+
+    betaChart.update();
+  });
+
+  priorBetaInput.addEventListener("change", () => {
+    const priorAlpha = priorAlphaInput.valueAsNumber;
+    const priorBeta = priorBetaInput.valueAsNumber;
+
+    betaChart.data.datasets[0].label = `Beta(${priorAlpha}, ${priorBeta})`;
+    betaChart.data.datasets[0].data = generateBetaDistributionData(
+      priorAlpha,
+      priorBeta
+    ).map(({ y }) => y);
+
+    betaChart.update();
   });
 });
 
@@ -94,8 +138,9 @@ class Trial {
   public trials = 0;
   public successes = 0;
   public failures = 0;
-  public alpha = 1;
-  public beta = 1;
+
+  public alpha: number;
+  public beta: number;
 
   private betaChart: Chart;
   private trialDotChart: Chart;
@@ -103,16 +148,22 @@ class Trial {
 
   constructor({
     probability,
+    priorAlpha,
+    priorBeta,
     betaChart,
     trialDotChart,
     trialBarChart,
   }: {
     probability: number;
+    priorAlpha: number;
+    priorBeta: number;
     betaChart: Chart;
     trialDotChart: Chart;
     trialBarChart: Chart;
   }) {
     this.probability = probability;
+    this.alpha = priorAlpha;
+    this.beta = priorBeta;
     this.betaChart = betaChart;
     this.trialDotChart = trialDotChart;
     this.trialBarChart = trialBarChart;

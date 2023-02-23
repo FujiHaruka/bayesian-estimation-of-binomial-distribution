@@ -14,6 +14,10 @@
   <body>
     <header class="container">
       <h1>Bayesian estimation of binomial distribution</h1>
+      <p>
+        This page visualises the Bayesian estimation of the binomial
+        distribution by simulating random-sampling of Bernoulli trials.
+      </p>
     </header>
 
     <main class="container">
@@ -44,7 +48,7 @@
       </footer>
 
       <article>
-        <h6>Parameters</h6>
+        <h6>Simulation Parameters</h6>
         <div class="grid">
           <label for="true-probability">
             True probability
@@ -54,6 +58,16 @@
           <label for="trials">
             Number of trials
             <input type="number" id="trials" value="100" />
+          </label>
+        </div>
+        <div class="grid">
+          <label for="prior-alpha">
+            Prior alpha
+            <input type="number" id="prior-alpha" value="1" />
+          </label>
+          <label for="prior-beta">
+            Prior beta
+            <input type="number" id="prior-beta" value="1" />
           </label>
         </div>
       </article>
