@@ -12,10 +12,15 @@
     <script type="module" src="entrypoint.ts"></script>
   </head>
   <body>
-    <main class="container">
-      <p>Bayesian estimation of binomial distribution</p>
+    <header class="container">
+      <h1>Bayesian estimation of binomial distribution</h1>
+    </header>
 
-      <div style="width: 100%; max-height: 40vh; margin-bottom: 32px;" class="grid">
+    <main class="container">
+      <div
+        style="width: 100%; max-height: 40vh; margin-bottom: 32px"
+        class="grid"
+      >
         <div style="padding-right: 16px">
           <canvas id="trial-dot-chart"></canvas>
         </div>
@@ -24,16 +29,22 @@
         </div>
       </div>
 
-      <div style="width: 100%; max-height: 40vh;">
+      <div style="width: 100%; max-height: 40vh">
         <canvas id="beta-chart"></canvas>
       </div>
 
-      <footer style="text-align: right">
-        <a href="#" role="button" id="run-simulation">Run Simulation</a>
+      <footer style="text-align: right; margin-top: 32px">
+        <button
+          type="button"
+          id="run-simulation"
+          style="display: inline-block; width: auto"
+        >
+          Run Simulation
+        </button>
       </footer>
 
       <article>
-        <header>Parameters</header>
+        <h6>Parameters</h6>
         <div class="grid">
           <label for="true-probability">
             True probability
@@ -42,13 +53,9 @@
 
           <label for="trials">
             Number of trials
-            <input type="number" id="trials" value="10" />
+            <input type="number" id="trials" value="100" />
           </label>
         </div>
-
-        <!-- <footer style="text-align: right;">
-          <a href="#" role="button" id="run-simulation">Run Simulation</a>
-        </footer> -->
       </article>
     </main>
   </body>

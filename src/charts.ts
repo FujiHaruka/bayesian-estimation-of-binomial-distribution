@@ -4,7 +4,7 @@ import { generateBetaDistributionData } from "./beta";
 
 export function createBetaDistributionChart(
   canvas: HTMLCanvasElement,
-  { alpha, beta }: { alpha: number; beta: number },
+  { alpha, beta }: { alpha: number; beta: number }
 ) {
   const data = generateBetaDistributionData(alpha, beta);
   return new Chart(canvas, {
@@ -40,9 +40,7 @@ export function createBetaDistributionChart(
   });
 }
 
-export function createTrialDotChart(
-  canvas: HTMLCanvasElement,
-) {
+export function createTrialDotChart(canvas: HTMLCanvasElement) {
   return new Chart(canvas, {
     type: "scatter",
     data: {
@@ -85,10 +83,13 @@ export function createTrialDotChart(
 
 export function createTrialCumulativeSumChart(
   canvas: HTMLCanvasElement,
-  { suggestedMin, suggestedMax }: {
+  {
+    suggestedMin,
+    suggestedMax,
+  }: {
     suggestedMin: number;
     suggestedMax: number;
-  },
+  }
 ) {
   return new Chart(canvas, {
     type: "line",

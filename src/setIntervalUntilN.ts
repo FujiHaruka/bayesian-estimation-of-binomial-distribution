@@ -1,7 +1,7 @@
 export function setIntervalUntilN(
   callback: () => void,
   interval: number,
-  n: number,
+  n: number
 ): void {
   let count = 0;
   const intervalId = setInterval(() => {
