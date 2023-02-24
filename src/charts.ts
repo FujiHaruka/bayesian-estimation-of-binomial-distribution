@@ -31,7 +31,7 @@ export function createBetaDistributionChart(
         //   data: [],
         //   pointRadius: 0,
         //   borderColor: "rgb(150, 150, 150)",
-        // }
+        // },
       ],
     },
     options: {
@@ -66,7 +66,9 @@ export function createBetaDistributionChart(
         beta
       ).map(({ y }) => y);
 
-      // rawChart.data.datasets[1].data = generateHPD(alpha, beta).map(({y}) => y)
+      // rawChart.data.datasets[1].data = generateHPD(alpha, beta).map(
+      //   ({ y }) => y
+      // );
 
       rawChart.update();
     },
