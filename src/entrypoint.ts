@@ -6,8 +6,8 @@ import {
   TrialCumulativeSumChart,
   TrialDotChart,
 } from "./charts";
-import { setSmartInterval } from "./interval";
-import { generateSample } from "./sample";
+import { setSmartInterval } from "./utils/interval";
+import { generateSample } from "./utils/sample";
 
 window.addEventListener("DOMContentLoaded", () => {
   const [

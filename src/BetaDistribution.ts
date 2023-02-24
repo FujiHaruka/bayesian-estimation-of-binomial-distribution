@@ -1,6 +1,6 @@
 import jStat from "jstat";
-import { BinarySearch } from "./BinarySearch";
-import { GoldenSectionSearch } from "./GoldenSectionSearch";
+import { BinarySearch } from "./algorithms/BinarySearch";
+import { GoldenSectionSearch } from "./algorithms/GoldenSectionSearch";
 
 const DATA_SIZE = 1000;
 
@@ -8,9 +8,10 @@ export function generateBetaDistributionData(
   alpha: number,
   beta: number
 ): { x: number; y: number }[] {
+  const distribution = new BetaDistribution(alpha, beta);
   return Array.from({ length: DATA_SIZE }, (_, i) => {
     const x = i / DATA_SIZE;
-    return { x, y: jStat.beta.pdf(x, alpha, beta) };
+    return { x, y: distribution.pdf(x) };
   });
 }
 

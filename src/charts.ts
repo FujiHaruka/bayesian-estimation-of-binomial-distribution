@@ -1,6 +1,6 @@
 import { Chart } from "chart.js/auto";
-import { seq } from "./arrays";
-import { generateBetaDistributionData, generateHPD } from "./beta";
+import { seq } from "./utils/arrays";
+import { generateBetaDistributionData, generateHPD } from "./BetaDistribution";
 
 export type BetaChart = {
   update: (params: { alpha: number; beta: number }) => void;
