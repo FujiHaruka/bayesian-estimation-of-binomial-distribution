@@ -10,6 +10,11 @@
       href="../node_modules/@picocss/pico/css/pico.min.css"
     />
     <script type="module" src="entrypoint.ts"></script>
+    <script
+      id="MathJax-script"
+      async
+      src="../node_modules/mathjax/es5/tex-svg.js"
+    ></script>
   </head>
   <body>
     <header class="container">
@@ -70,6 +75,23 @@
           </label>
         </div>
       </article>
+
+      <section>
+        <h2>How the distributions are updated</h2>
+        <p>
+          When you choose a beta distribution like the following as the prior
+          distribution for the parameter \(p\) , which is the success
+          probability of Bernoulli trials.
+        </p>
+        <p>$$ \mbox{Beta}(\alpha, \beta) $$</p>
+        <p>
+          Let \(n\) the total trials and \(k\) the success trials. Then the
+          poterior distribution is also a beta distribution, and the \(\alpha\)
+          and \(\beta\) are updated like this.
+        </p>
+        <p>$$ \mbox{Beta}(\alpha + k, \beta + n - k) $$</p>
+        <p>The Bayesian estimation of binomial distribution is that simple.</p>
+      </section>
     </main>
 
     <!-- GitHub Ribbon -->
