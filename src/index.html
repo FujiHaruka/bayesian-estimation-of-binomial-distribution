@@ -15,9 +15,21 @@
       async
       src="../node_modules/mathjax/es5/tex-svg.js"
     ></script>
+    <style>
+      @media (max-width: 680px) {
+        #github-ribbon img {
+          width: 100px;
+          height: 100px;
+        }
+
+        #top-header {
+          margin-top: 32px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <header class="container">
+    <header class="container" id="top-header">
       <h1>Bayesian estimation of binomial distribution</h1>
       <p>
         This page visualises the Bayesian estimation of the binomial
@@ -96,6 +108,7 @@
 
     <!-- GitHub Ribbon -->
     <a
+      id="github-ribbon"
       style="position: absolute; top: 0; right: 0"
       href="https://github.com/FujiHaruka/bayesian-estimation-of-binomial-distribution"
       target="_blank"
